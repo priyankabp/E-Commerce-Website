@@ -1,0 +1,54 @@
+body{
+	padding-top: 50px;
+
+}
+
+#headerWrapper{
+	position: relative;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	height: 600px;
+	background-image: url(../images/headerlogo/background.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 700px;
+	background-position: top center;
+	background-attachment: fixed;
+}
+
+#logotext{
+	padding-top: 250px;
+	position: center;
+	width: 75%;
+	height: 100px;
+	background-image: url(../images/headerlogo/text.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 70% 180px;
+	top 50%;
+
+}
+
+#foreground{
+	position: absolute;
+	width: 100%;
+	height: 400px;
+	background-image: url(../images/headerlogo/foreground.png);
+	background-size: auto 400px;
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	top: 525px;
+	right: -50px;
+}
+
+#background {
+	position: absolute;
+	width: 100%;
+	height: 350px;
+	background-image: url(../images/headerlogo/background.png);
+	background-position: left bottom;
+	background-repeat: no-repeat;
+	background-size: auto 350px;
+	top: 400px;
+	left: -25px; 
+}
