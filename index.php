@@ -23,7 +23,7 @@
           <button type="button" class="btn btn-sm btn-success" onclick="detailsmodal(<?= $product['id']; ?>)">Details</button>
         </div>
       <?php endwhile; ?>
-    </div><br>
+    </div>
   </div>
 
 <?php
