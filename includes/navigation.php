@@ -3,7 +3,7 @@
   $parentquery = $db->query($sql);
 ?>
 <!-- Top navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <a href="index.php" class="navbar-brand"> Online Farm Products</a>
       <ul class="nav navbar-nav">

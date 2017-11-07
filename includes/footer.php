@@ -1,7 +1,12 @@
 </div>
 
 <!-- Footer -->
-<footer class="text-center" id="footer">&copy; Copyright 2017-2019 Online Farm Products</footer>
+<footer>
+       <div class="container">
+          Copyright &copy; by <a href="https://www.linkedin.com/in/priyankaphapale/"> Priyanka Phapale</a>
+          All Rights Reserved from 2017 - 2027
+       </div>
+</footer>
 
 
 
