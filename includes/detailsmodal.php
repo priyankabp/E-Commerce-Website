@@ -15,6 +15,7 @@
 
 <!-- Details Modal-->
 <?php ob_start(); ?> <!-- Read everything and add to buffer -->
+
 <div class="modal fade details-1" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-1" aria-hidden="true">
   <div class="model-dialog modal-lg">
     <div class="modal-content">
@@ -45,15 +46,15 @@
                     <input type="text" class="form-control" name="quantity" id="quantity">
                   </div><div class="col-xs-9"></div>
                 </div><br><br>
-                <div class="form-group">
-                  <label for="size"> Size:</label>
+                <div class="form-group"><br><br>
+                  <label for="size"> Weight:</label>
                   <select name="size" id="size" class="form-control">
                     <option value=""></option>
-                    <?php foreach ($weight_array as $string) {
+                    <?php foreach($weight_array as $string) {
                       $string_array = explode(':', $string);
-                      $weight = $weight_array[0];
-                      $quantity = $weight_array[1];
-                      echo '<option value="'.$weight.'">'.$weight.' ('.$quantity.' Available)</option>';
+                      $weight_lb = $string_array[0];
+                      $quantity = $string_array[1];
+                      echo '<option value="'.$weight_lb.'">'.$weight_lb.' ('.$quantity.' Available)</option>';
                     } ?>
                   </select>
                 </div>

@@ -25,10 +25,17 @@
       <?php endwhile; ?>
     </div>
   </div>
+  <script type="text/javascript">
+    function closeModal(){
+      $('#details-modal').modal('hide');
+      setTimeout(function(){
+        $('#details-modal').remove();
+        $('.modal-backdrop').remove();
+      },500);
+    }
+  </script>
 
 <?php
   include 'includes/rightbar.php';
   include 'includes/footer.php';
 ?>
-
-  

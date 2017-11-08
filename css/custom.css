@@ -4,10 +4,10 @@ body {
   padding-top: 50px;
 }
 
-/*align product name,image, price and details button to center of div*/
+/*align product name,image, price and details button to center of div
 .row{
 	text-align: center;
-}
+}*/
 
 footer {
 	background: #17B491;
