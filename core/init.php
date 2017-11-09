@@ -4,6 +4,7 @@
 		echo 'Database connection failed with following errors :'. mysqli_connect_error();
 		die();	
 	}
-
-	define('BASEURL', '/E-Commerce-Website/');
+	
+	require_once 'config.php';
+	require_once BASEURL.'helpers/helpers.php';
 ?>
