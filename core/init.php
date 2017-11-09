@@ -5,6 +5,6 @@
 		die();	
 	}
 	
-	require_once 'config.php';
+	require_once $_SERVER['DOCUMENT_ROOT'].'/E-Commerce-Website/config.php';
 	require_once BASEURL.'helpers/helpers.php';
 ?>
