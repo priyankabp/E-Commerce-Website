@@ -15,7 +15,10 @@
 	    }
 	  }
 ?>
-	<h2 class="text-center">Products</h2><hr>
+	<h2 class="text-center">Products</h2>
+  <a href="products.php?add=1" class="btn btn-primary pull-right" id="add-product-btn">Add Product</a>
+  <div class="clearfix"></div>
+  <hr>
 	<?php
 		$get_products = "SELECT * FROM products WHERE deleted = 0";
 	  	$get_products_run = mysqli_query($db,$get_products);
