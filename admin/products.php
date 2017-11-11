@@ -40,8 +40,34 @@
             
           </select>
       </div>
-  </form>
-
+      <div class="form-group col-md-3">
+          <label for="price">Price*:</label>
+          <input id="price" type="text" name="price" class="form-control" value="<?php echo ((isset($_POST['price']))?$_POST['price']:'');?>">
+      </div>
+      <div class="form-group col-md-3">
+          <label for="list_price">List Price*:</label>
+          <input id="list_price" type="text" name="listprice" class="form-control" value="<?php echo ((isset($_POST['list_price']))?$_POST['list_price']:'');?>">
+      </div>
+      <div class="form-group col-md-3">
+          <label>Quantity & Weights *:</label>
+          <button class="btn btn-primary form-control" onclick="$('#weightsModal').modal('toggle');return false;">Quanity & Weights</button>
+      </div>
+      <div class="form-group col-md-3">
+          <label for="weights">Weights & Qty Preview</label>
+          <input class="form-control" type="text" name="weights" id="weights" value="<?php echo ((isset($_POST['weights']))?$_POST['sizes']:'');?>" readonly>
+      </div>
+      <div class="form-group col-md-6">
+          <label for="photo">Product Photo:</label>
+          <input type="file" name="photo" id="photo" class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="description">Description:</label>
+        <textarea class="form-control" rows="6" type="text" name="description" id="description"><?php echo ((isset($_POST['description']))? $_POST['description']:'');?></textarea>
+      </div>
+      <div class="form-group pull-right">
+          <input type="submit" value="Add Product" class="form-control btn btn-primary pull-right" name="">
+      </div><div class="clearfix"></div>
+  </form> 
 
 <!--UI display code when Add Product is not clicked -->
 <?php
