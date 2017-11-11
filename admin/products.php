@@ -8,6 +8,27 @@
       $get_brand = $db->query("SELECT * FROM brands ORDER BY brand");
       $get_parent = $db->query("SELECT * FROM categories WHERE parent = 0 ORDER BY category");
 
+      $weightsArray = array();
+      if ($_POST) {
+          if (!empty($_POST['weights'])) {
+              $weightString = $_POST['weights'];
+              $trimWeightString = rtrim($weightString,','); 
+              echo $trimWeightString;
+              $weightsArray = explode(',', $trimWeightString);
+              $wArray = array();
+              $qArray = array();
+              foreach ($weightsArray as $ws) {
+                  $w = explode(':', $ws);
+                  $q = explode(':', $ws);
+                  $wArray[] = $w[0];
+                  $qArray[] = $q[1]; 
+              }
+          }
+          else{
+              $weightsArray = array();
+          }
+      }
+
 ?>
   <!-- Add Product Form -->
   <h2 class="text-center">Add New Product</h2><hr>
@@ -67,7 +88,37 @@
       <div class="form-group pull-right">
           <input type="submit" value="Add Product" class="form-control btn btn-primary pull-right" name="">
       </div><div class="clearfix"></div>
-  </form> 
+  </form>
+
+  <!-- Modal -->
+<div class="modal fade" id="weightsModal" tabindex="-1" role="dialog" aria-labelledby="weightsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="weightsModalLabel">Quantity & Weights</h4>
+      </div>
+      <div class="modal-body">
+          <div class="container-fluid">
+              <?php for ($i=1; $i <=12 ; $i++): ?>
+                  <div class="form-group col-md-4">
+                      <label for="weight<?=$i;?>">Weight:</label>
+                      <input type="text" name="weight<?=$i;?>" id="weight<?=$i;?>" value="<?=((!empty($wArray[$i-1]))? $wArray[$i-1]:'');?>" class="form-control">
+                  </div>
+                  <div class="form-group col-md-2">
+                      <label for="quantity<?=$i;?>">Quantity:</label>
+                      <input type="number" name="quantity<?=$i;?>" id="quantity<?=$i;?>" value="<?=((!empty($qArray[$i-1]))? $qArray[$i-1]:'');?>" min="0" class="form-control">
+                  </div>
+              <?php endfor; ?>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="updateWeights(); $('weightsModal').modal('toggel');return false; ">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> 
 
 <!--UI display code when Add Product is not clicked -->
 <?php
