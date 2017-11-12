@@ -1,103 +1,120 @@
 <?php
-	  require_once '../core/init.php';
+    require_once '../core/init.php';
     require_once '../helpers/helpers.php';
-	  include 'includes/head.php';
-	  include 'includes/navigation.php';
-
+    include 'includes/head.php';
+    include 'includes/navigation.php';
 
     #UI display code when Add Product is not clicked 
-    if (isset($_GET['add'])) {
+    if (isset($_GET['add']) | isset($_GET['edit'])) {
       $get_brand = $db->query("SELECT * FROM brands ORDER BY brand");
       $get_parent = $db->query("SELECT * FROM categories WHERE parent = 0 ORDER BY category");
 
+      $title = ((isset($_POST['title']) && $_POST['title'] != '')? $_POST['title']:'');
+      $brand = ((isset($_POST['brand']) && !empty($_POST['brand']))? $_POST['brand']:'');
+      $parent = ((isset($_POST['parent']) && !empty($_POST['parent']))? $_POST['parent']:'');
+      $child = ((isset($_POST['child']) && !empty($_POST['child']))? $_POST['child']:'');
+
+      if (isset($_GET['edit'])) {
+          $edit_id = $_GET['edit'];
+          $get_edit_product = $db->query("SELECT * FROM products WHERE id = $edit_id");
+          $edit_product = mysqli_fetch_assoc($get_edit_product);
+          $edit_category = ((isset($_POST['child']) && $_POST['child'] != '')? $_POST['child']:$edit_product['categories']);
+          $title = ((isset($_POST['title']) && $_POST['title'] != '')?$_POST['title']:$edit_product['title']);
+          $brand = ((isset($_POST['brand']) && $_POST['brand'] != '')?$_POST['brand']:$edit_product['brand']);
+          $parentQuery = $db->query("SELECT * FROM categories WHERE id = $edit_category");
+          $parentResult = mysqli_fetch_assoc($parentQuery);
+          $parent = ((isset($_POST['parent']) && $_POST['parent'] != '')?$_POST['parent']:$parentResult['parent']);
+
+      }
+      
       $weightsArray = array();
       if ($_POST) {
-        //get products parameters
-        $title = $_POST['title'];
-        $brand = $_POST['brand'];
-        $categories = $_POST['child'];
-        $price = $_POST['price'];
-        $list_price = $_POST['listprice'];
-        $weights = $_POST['weights'];
-        $description = $_POST['description'];
-        $dbpath = '';
+          //get products parameters
+          $title = $_POST['title'];
+          $brand = $_POST['brand'];
+          $categories = $_POST['child'];
+          $price = $_POST['price'];
+          $list_price = $_POST['listprice'];
+          $weights = $_POST['weights'];
+          $description = $_POST['description'];
+          $dbpath = '';
 
-        $errors = array();
-          if (!empty($_POST['weights'])) {
-              $weightString = $_POST['weights'];
-              $trimWeightString = rtrim($weightString,','); 
-              $weightsArray = explode(',',$trimWeightString);
-              echo $trimWeightString;
-              $wArray = array();
-              $qArray = array();
-              foreach ($weightsArray as $ws) {
-                  $w = explode(':', $ws);
-                  $q = explode(':', $ws);
-                  $wArray[] = $w[0];
-                  $qArray[] = $q[1]; 
-              }
-          }
-          else{
-              $weightsArray = array();
-          }
+          $errors = array();
+            if (!empty($_POST['weights'])) {
+                $weightString = $_POST['weights'];
+                $trimWeightString = rtrim($weightString,','); 
+                $weightsArray = explode(',',$trimWeightString);
+                echo $trimWeightString;
+                $wArray = array();
+                $qArray = array();
+                foreach ($weightsArray as $ws) {
+                    $w = explode(':', $ws);
+                    $q = explode(':', $ws);
+                    $wArray[] = $w[0];
+                    $qArray[] = $q[1]; 
+                }
+            }
+            else{
+                $weightsArray = array();
+            }
 
-          $required = array('title','brand','price','parent','child','weights');
-          foreach ($required as $field) {
-              if ($_POST[$field]=='') {
-                $errors[] = "All fields (*) are required";
-                break;
-              }
-          }
-          if (!empty($_FILES)) {
-              var_dump($_FILES);
-              $photo = $_FILES['photo'];
-              $name = $photo['name'];
-              $nameArray = explode('.',$name);
-              $fileName = $nameArray[0];
-              $fileExt = $nameArray[1];
-              $mime = explode('/', $photo['type']);
-              $mimeType = $mime[0];
-              $mimeExt = $mime[1];
-              $tmpLoc = $photo['tmp_name'];
-              $fileSize = $photo['size'];
-              $allowed = array('png','jpg','jpeg','gif');
-              $uploadName = md5(microtime()).'.'.$fileExt;
-              $uploadPath = BASEURL.'images/products/'.$uploadName;
-              $dbpath = '/E-Commerce-Website/images/products/'.$uploadName;
-              if ($mimeType != 'image') {
-                  $errors[] = "File must be an image";
-              }
-              if (!in_array($fileExt,$allowed)) {
-                  $errors[] = "Photo must be png, jpg, jpeg or gif.";
-              }
-              if ($fileSize > 15000000) {
-                  $errors[] = "File size must be under 15MB.";
-              }
-              if ($fileExt != $mimeExt && ($mimeExt == 'jpeg' && $fileExt != 'jpg')) {
-                  $errors[] = "File extension does not match.";
-              }
-          }
-          if (!empty($errors)) {
-              echo display_errors($errors);
-          }
-          else{
-              //upload file and insert into database
-              $insert_product_query = "INSERT INTO `products` (`title`,`price`,`list_price`,`brand`,`categories`,`image`,`description`,`weights`) VALUES ('$title','$price','$list_price','$brand','$categories','$dbpath','$description','$weights')";
-              if (mysqli_query($db,$insert_product_query)) {
-                    $msg = "New Product Added";
-                    move_uploaded_file($tmpLoc, $uploadPath);
-              }
-              else{
-                    echo "Error: " . $insert_product_query . "<br>" . $connection->error;
-                    $error = "New Product Not Added";
-              }
-              header('location: products.php');
-          }
+            $required = array('title','brand','price','parent','child','weights');
+            foreach ($required as $field) {
+                if ($_POST[$field]=='') {
+                  $errors[] = "All fields (*) are required";
+                  break;
+                }
+            }
+            if (!empty($_FILES)) {
+                var_dump($_FILES);
+                $photo = $_FILES['photo'];
+                $name = $photo['name'];
+                $nameArray = explode('.',$name);
+                $fileName = $nameArray[0];
+                $fileExt = $nameArray[1];
+                $mime = explode('/', $photo['type']);
+                $mimeType = $mime[0];
+                $mimeExt = $mime[1];
+                $tmpLoc = $photo['tmp_name'];
+                $fileSize = $photo['size'];
+                $allowed = array('png','jpg','jpeg','gif');
+                $uploadName = md5(microtime()).'.'.$fileExt;
+                $uploadPath = BASEURL.'images/products/'.$uploadName;
+                $dbpath = '/E-Commerce-Website/images/products/'.$uploadName;
+                if ($mimeType != 'image') {
+                    $errors[] = "File must be an image";
+                }
+                if (!in_array($fileExt,$allowed)) {
+                    $errors[] = "Photo must be png, jpg, jpeg or gif.";
+                }
+                if ($fileSize > 15000000) {
+                    $errors[] = "File size must be under 15MB.";
+                }
+                if ($fileExt != $mimeExt && ($mimeExt == 'jpeg' && $fileExt != 'jpg')) {
+                    $errors[] = "File extension does not match.";
+                }
+            }
+            if (!empty($errors)) {
+                echo display_errors($errors);
+            }
+            else{
+                //upload file and insert into database
+                $insert_product_query = "INSERT INTO `products` (`title`,`price`,`list_price`,`brand`,`categories`,`image`,`description`,`weights`) VALUES ('$title','$price','$list_price','$brand','$categories','$dbpath','$description','$weights')";
+                if (mysqli_query($db,$insert_product_query)) {
+                      $msg = "New Product Added";
+                      move_uploaded_file($tmpLoc, $uploadPath);
+                }
+                else{
+                      echo "Error: " . $insert_product_query . "<br>" . $connection->error;
+                      $error = "New Product Not Added";
+                }
+                header('location: products.php');
+            }
       }
 
 ?>
   <!-- Add Product Form -->
-  <h2 class="text-center">Add New Product</h2><hr>
+  <h2 class="text-center"><?php echo ((isset($_GET['add']))?"Add A New ":"Edit");?> Product</h2><hr>
   <?php 
       if (isset($error)) {
           echo "<span class='pull-right' style='color:red;'>$error</span>";
@@ -106,26 +123,26 @@
           echo "<span class='pull-right' style='color:green;'>$msg</span>";
       }
   ?>
-  <form action="products.php?add=1" method="post" enctype="multipart/form-data">
+  <form action="products.php?<?php echo ((isset($_GET['edit']))?"edit=".$edit_id:"add=1");?>" method="post" enctype="multipart/form-data">
       <div class="form-group col-md-3">
           <label for="title">Title*:</label>
-          <input type="text" name="title" class="form-control" id="title" value="<?php echo ((isset($_POST['title']))?$_POST['title']:'');?>">
+          <input type="text" name="title" class="form-control" id="title" value="<?php echo $title;?>">
       </div>
       <div class="form-group col-md-3">
           <label for="brand">Brand*:</label>
           <select class="form-control" id="brand" name="brand">
-              <option value=""<?php echo ((isset($_POST['brand']) && $_POST['brand'] == '')?' selected':''); ?>></option>
+              <option value=""<?php echo (($brand == '')?' selected':''); ?>></option>
               <?php while($get_brand_row = mysqli_fetch_assoc($get_brand)): ?>
-                <option value="<?php echo $get_brand_row['id']; ?>" <?php ((isset($_POST['brand']) && $_POST['brand'] == $get_brand_row['id'])? ' selected':'');?> ><?php echo $get_brand_row['brand']; ?></option>
+                <option value="<?php echo $get_brand_row['id']; ?>"<?php echo (($brand == $get_brand_row['id'])? ' selected':'');?> ><?php echo $get_brand_row['brand']; ?></option>
               <?php endwhile; ?>
           </select>
       </div>
       <div class="form-group col-md-3">
           <label for="parent">Parent Category*:</label>
           <select class="form-control" id="parent" name="parent">
-              <option value=""<?php echo ((isset($_POST['parent']) && $_POST['parent'] == '')?' selected':''); ?>></option>
+              <option value=""<?php echo (($parent == '')?' selected':''); ?>></option>
               <?php while($get_parent_row = mysqli_fetch_assoc($get_parent)): ?>
-                <option value="<?php echo $get_parent_row['id']; ?>" <?php ((isset($_POST['parent']) && $_POST['parent'] == $get_parent_row['id'])? ' selected':'');?> ><?php echo $get_parent_row['category']; ?></option>
+                <option value="<?php echo $get_parent_row['id']; ?>" <?php echo (($parent == $get_parent_row['id'])? ' selected':'');?> ><?php echo $get_parent_row['category']; ?></option>
               <?php endwhile; ?>
           </select>
       </div>
@@ -160,7 +177,8 @@
         <textarea class="form-control" rows="6" type="text" name="description" id="description"><?php echo ((isset($_POST['description']))? $_POST['description']:'');?></textarea>
       </div>
       <div class="form-group pull-right">
-          <input type="submit" value="Add Product" class="form-control btn btn-primary pull-right" name="">
+          <a href="products.php" class="btn btn-primary">Cancel</a>&nbsp&nbsp
+          <input type="submit" value="<?php echo ((isset($_GET['add']))?"Add":"Edit");?> Product" class="btn btn-primary" name="">
       </div><div class="clearfix"></div>
   </form>
 
@@ -198,28 +216,28 @@
 <?php
     }
     else{
-    	  if (isset($_GET['featured'])) {
-    	  	$id = $_GET['id'];
-    	  	$featured = $_GET['featured'];
-    	  	$featured_query = "UPDATE products SET featured = '$featured' WHERE id = '$id'";
-    	  	if (mysqli_query($db,$featured_query)) {
-            	$update_msg = "Product featured";
-    	    }
-    	    else{
-    	        $update_error = "Failed to feature Product";
-    	    }
-    	  }
+        if (isset($_GET['featured'])) {
+          $id = $_GET['id'];
+          $featured = $_GET['featured'];
+          $featured_query = "UPDATE products SET featured = '$featured' WHERE id = '$id'";
+          if (mysqli_query($db,$featured_query)) {
+              $update_msg = "Product featured";
+          }
+          else{
+              $update_error = "Failed to feature Product";
+          }
+        }
 ?>
-      	<h2 class="text-center">Products</h2>
+        <h2 class="text-center">Products</h2>
         <a href="products.php?add=1" class="btn btn-primary pull-right" id="add-product-btn">Add Product</a>
         <div class="clearfix"></div>
         <hr>
-      	<?php
-      		$get_products = "SELECT * FROM products WHERE deleted = 0";
-      	  	$get_products_run = mysqli_query($db,$get_products);
-      	  	if (mysqli_num_rows($get_products_run)>0) {
-      	?>
-      	<?php 
+        <?php
+          $get_products = "SELECT * FROM products WHERE deleted = 0";
+            $get_products_run = mysqli_query($db,$get_products);
+            if (mysqli_num_rows($get_products_run)>0) {
+        ?>
+        <?php 
               if (isset($update_msg)) {
                   echo "<span class='pull-right' style='color:green;'>$update_msg</span>";
               }
@@ -227,18 +245,18 @@
                   echo "<span class='pull-right' style='color:red;'>$update_rror</span>";
               }
           ?>
-      	<table class="table table-bordered table-condensed table-stripped">
-      		<thead>
-      			<th>Product</th>
-      			<th>Price</th>
-      			<th>Category</th>
-      			<th>Featured</th>
-      			<th>Sold</th>
-      			<th>Edit</th>
-      			<th>Delete</th>
-      		</thead>
-      		<tbody>
-      			<?php while($get_product_row = mysqli_fetch_array($get_products_run)){
+        <table class="table table-bordered table-condensed table-stripped">
+          <thead>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Featured</th>
+            <th>Sold</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            <?php while($get_product_row = mysqli_fetch_array($get_products_run)){
                           $product_id = $get_product_row['id'];
                           $product_title = $get_product_row['title'];
                           $product_price = $get_product_row['price'];
@@ -249,15 +267,15 @@
                           $category_query = "SELECT * FROM categories WHERE id = $product_category_id";
                           $category_run = mysqli_query($db,$category_query);
                           if (mysqli_num_rows($category_run)>0) {
-                          	$category_row = mysqli_fetch_array($category_run);
-      	                    $child = $category_row['category'];
-      	                    $parent_ID = $category_row['parent'];
+                            $category_row = mysqli_fetch_array($category_run);
+                            $child = $category_row['category'];
+                            $parent_ID = $category_row['parent'];
                           }
                           $parent_query = "SELECT * FROM categories WHERE id = $parent_ID";
                           $parent_run = mysqli_query($db,$parent_query);
                           if (mysqli_num_rows($parent_run)>0) {
-                          	$parent_row = mysqli_fetch_array($parent_run);
-      	                    $child_parent = $parent_row['category'];
+                            $parent_row = mysqli_fetch_array($parent_run);
+                            $child_parent = $parent_row['category'];
                           }
                          
                           $product_category = $child_parent.' / '.$child;
@@ -273,19 +291,19 @@
                         <td><?php echo money($product_price);?></td>
                         <td><?php echo $product_category;?></td>
                         <td>
-                        		<a href="products.php?featured=<?php echo (($product_featured == 0)?'1':'0');?>&id=<?php echo $product_id;?>" class="">
-                        		<span class="glyphicon glyphicon-<?php echo (($product_featured == 1)?'minus':'plus'); ?>"></span>
-                        	    </a>
-                        	    &nbsp <?php echo (($product_featured == 1)?'Featured Product':'');?>
+                            <a href="products.php?featured=<?php echo (($product_featured == 0)?'1':'0');?>&id=<?php echo $product_id;?>" class="">
+                            <span class="glyphicon glyphicon-<?php echo (($product_featured == 1)?'minus':'plus'); ?>"></span>
+                              </a>
+                              &nbsp <?php echo (($product_featured == 1)?'Featured Product':'');?>
                         </td>
                         <td>0</td>
                         <td><a href="products.php?edit=<?php echo $product_id;?>"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
                         <td><a href="products.php?delete=<?php echo $product_id;?>"><i class="fa fa-times" aria-hidden="true"></i></a></td>
                       </tr>
                   <?php } ?>
-      		</tbody>
-      	</table>
-      	<?php 
+          </tbody>
+        </table>
+        <?php 
               } 
               else{
                   echo "<center><h3>No categories Found</h3></center>";
@@ -293,4 +311,5 @@
            ?>
 <?php 
     }#else close
-    require_once('includes/footer.php'); ?>
+    require_once('includes/footer.php'); 
+?>
