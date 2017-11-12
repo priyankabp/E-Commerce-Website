@@ -1,7 +1,9 @@
 <?php
 	  require_once '../core/init.php';
+    require_once '../helpers/helpers.php';
 	  include 'includes/head.php';
 	  include 'includes/navigation.php';
+
 
     #UI display code when Add Product is not clicked 
     if (isset($_GET['add'])) {
@@ -10,11 +12,22 @@
 
       $weightsArray = array();
       if ($_POST) {
+        //get products parameters
+        $title = $_POST['title'];
+        $brand = $_POST['brand'];
+        $categories = $_POST['child'];
+        $price = $_POST['price'];
+        $list_price = $_POST['listprice'];
+        $weights = $_POST['weights'];
+        $description = $_POST['description'];
+        $dbpath = '';
+
+        $errors = array();
           if (!empty($_POST['weights'])) {
               $weightString = $_POST['weights'];
               $trimWeightString = rtrim($weightString,','); 
+              $weightsArray = explode(',',$trimWeightString);
               echo $trimWeightString;
-              $weightsArray = explode(',', $trimWeightString);
               $wArray = array();
               $qArray = array();
               foreach ($weightsArray as $ws) {
@@ -27,11 +40,72 @@
           else{
               $weightsArray = array();
           }
+
+          $required = array('title','brand','price','parent','child','weights');
+          foreach ($required as $field) {
+              if ($_POST[$field]=='') {
+                $errors[] = "All fields (*) are required";
+                break;
+              }
+          }
+          if (!empty($_FILES)) {
+              var_dump($_FILES);
+              $photo = $_FILES['photo'];
+              $name = $photo['name'];
+              $nameArray = explode('.',$name);
+              $fileName = $nameArray[0];
+              $fileExt = $nameArray[1];
+              $mime = explode('/', $photo['type']);
+              $mimeType = $mime[0];
+              $mimeExt = $mime[1];
+              $tmpLoc = $photo['tmp_name'];
+              $fileSize = $photo['size'];
+              $allowed = array('png','jpg','jpeg','gif');
+              $uploadName = md5(microtime()).'.'.$fileExt;
+              $uploadPath = BASEURL.'images/products/'.$uploadName;
+              $dbpath = '/E-Commerce-Website/images/products/'.$uploadName;
+              if ($mimeType != 'image') {
+                  $errors[] = "File must be an image";
+              }
+              if (!in_array($fileExt,$allowed)) {
+                  $errors[] = "Photo must be png, jpg, jpeg or gif.";
+              }
+              if ($fileSize > 15000000) {
+                  $errors[] = "File size must be under 15MB.";
+              }
+              if ($fileExt != $mimeExt && ($mimeExt == 'jpeg' && $fileExt != 'jpg')) {
+                  $errors[] = "File extension does not match.";
+              }
+          }
+          if (!empty($errors)) {
+              echo display_errors($errors);
+          }
+          else{
+              //upload file and insert into database
+              $insert_product_query = "INSERT INTO `products` (`title`,`price`,`list_price`,`brand`,`categories`,`image`,`description`,`weights`) VALUES ('$title','$price','$list_price','$brand','$categories','$dbpath','$description','$weights')";
+              if (mysqli_query($db,$insert_product_query)) {
+                    $msg = "New Product Added";
+                    move_uploaded_file($tmpLoc, $uploadPath);
+              }
+              else{
+                    echo "Error: " . $insert_product_query . "<br>" . $connection->error;
+                    $error = "New Product Not Added";
+              }
+              header('location: products.php');
+          }
       }
 
 ?>
   <!-- Add Product Form -->
   <h2 class="text-center">Add New Product</h2><hr>
+  <?php 
+      if (isset($error)) {
+          echo "<span class='pull-right' style='color:red;'>$error</span>";
+      }
+      elseif (isset($msg)) {
+          echo "<span class='pull-right' style='color:green;'>$msg</span>";
+      }
+  ?>
   <form action="products.php?add=1" method="post" enctype="multipart/form-data">
       <div class="form-group col-md-3">
           <label for="title">Title*:</label>
@@ -66,7 +140,7 @@
           <input id="price" type="text" name="price" class="form-control" value="<?php echo ((isset($_POST['price']))?$_POST['price']:'');?>">
       </div>
       <div class="form-group col-md-3">
-          <label for="list_price">List Price*:</label>
+          <label for="list_price">List Price:</label>
           <input id="list_price" type="text" name="listprice" class="form-control" value="<?php echo ((isset($_POST['list_price']))?$_POST['list_price']:'');?>">
       </div>
       <div class="form-group col-md-3">
