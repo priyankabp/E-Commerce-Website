@@ -1,7 +1,7 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   font-family: 'Oswald', sans-serif;
-  padding-top: 70px;
+  padding-top: 50px;
 }
 
 /*align product name,image, price and details button to center of div
