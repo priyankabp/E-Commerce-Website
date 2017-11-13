@@ -4,6 +4,22 @@
     include 'includes/head.php';
     include 'includes/navigation.php';
 
+    //delete product
+    if (isset($_GET['delete'])) {
+        $delete_id = $_GET['delete'];
+        $check_query = "SELECT * FROM products WHERE id = '$delete_id'";
+        $check_run = mysqli_query($db,$check_query);
+        if (mysqli_num_rows($check_run) > 0) {
+          $delete_query = "UPDATE `products` SET `deleted`='1' WHERE `id`='$delete_id'";
+          if (mysqli_query($db,$delete_query)) {
+            $delete_msg = "Product deleted";
+          }
+          else{
+            $delete_error = "Failed to delete Product";
+          }
+        }
+    }
+ 
     $dbpath = '';
     #UI display code when Add Product is not clicked 
     if (isset($_GET['add']) | isset($_GET['edit'])) {
@@ -125,9 +141,14 @@
                 if (isset($_GET['edit'])) {
                     $insert_product_query = "UPDATE products SET title = '$title', price = '$price', list_price = '$list_price', brand = '$brand', categories = '$categories', image = '$dbpath', description = '$description', weights = '$weights' WHERE id = '$edit_id'";
                 }
-
-                $db->query($insert_product_query);
-                move_uploaded_file($tmpLoc, $uploadPath);
+                if (mysqli_query($db,$insert_product_query)) {
+                      $msg = "New Product Added";
+                      move_uploaded_file($tmpLoc, $uploadPath);
+                }
+                else{
+                      echo "Error: " . $insert_product_query . "<br>" . $connection->error;
+                      $error = "New Product Not Added";
+                }
                 header('location: products.php');
             }
       }
@@ -260,7 +281,7 @@
         <div class="clearfix"></div>
         <hr>
         <?php
-          $get_products = "SELECT * FROM products WHERE deleted = 0";
+          $get_products = "SELECT * FROM `products` WHERE deleted = 0";
             $get_products_run = mysqli_query($db,$get_products);
             if (mysqli_num_rows($get_products_run)>0) {
         ?>
