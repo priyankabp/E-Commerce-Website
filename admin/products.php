@@ -29,8 +29,8 @@
               $image_url = $_SERVER['DOCUMENT_ROOT'].$edit_product['image'];
               echo $image_url;
               unlink($image_url);
-              $db->query("UPDATE products SET image = '' WHERE id = '$edit_id'");
-              header('location : products.php?edit='.$edit_id);
+              $db->query("UPDATE `products` SET `image` = '' WHERE id = '$edit_id'");
+              header('location: products.php?edit='.$edit_id);
           }
           $category = ((isset($_POST['child']) && $_POST['child'] != '')? $_POST['child']:$edit_product['categories']);
           $title = ((isset($_POST['title']) && $_POST['title'] != '')?$_POST['title']:$edit_product['title']);
@@ -43,7 +43,8 @@
           $description = ((isset($_POST['description']) && $_POST['description'] != '')?$_POST['description']:$edit_product['description']);
           $weights = ((isset($_POST['weights']) && $_POST['weights'] != '')?$_POST['weights']:$edit_product['weights']);
           $weights = rtrim($weights,',');
-          $saved_image = (($edit_product['image'] != '')?$edit_product['image']:'');
+          $saved_image = ((isset($_POST['image']) && $_POST['image'] != '')?$_POST['image']:$edit_product['image']);
+          //$saved_image = (($edit_product['image'] != '')?$edit_product['image']:'');
           $dbpath = $saved_image;
 
       }
