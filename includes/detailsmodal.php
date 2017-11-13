@@ -6,7 +6,7 @@
   $result = $db->query($sql);
   $product = mysqli_fetch_assoc($result);
   $brand_id = $product['brand'];
-  $sql_brand = "SELECT brand FROM brand WHERE id = '$brand_id'";
+  $sql_brand = "SELECT brand FROM brands WHERE id = '$brand_id'";
   $brand_query = $db->query($sql_brand);
   $brand = mysqli_fetch_assoc($brand_query);
   $weight = $product['weights'];
