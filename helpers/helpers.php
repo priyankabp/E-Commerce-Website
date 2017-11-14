@@ -53,4 +53,8 @@
 		$_SESSION['error_flash'] = "You don't have permission to access that page!";
 		
 	}
+
+	function preety_date($date){
+		return preety_date("M d, Y h:i A",strtotime($date));
+	}
 ?>
