@@ -13,7 +13,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a href="index.php" class="navbar-brand"> Online Farm Products</a>
+              <a href="index.php" class="navbar-brand"> E-Farmarket</a>
         </div>
 
         <div class="container collapse navbar-collapse" id="bs-example-navbar-collapse-2">

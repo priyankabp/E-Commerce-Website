@@ -1,7 +1,5 @@
 <!--  Header -->
-  <div id="headerWrapper">
-    <div id="background"></div>
-    <div id="foreground"></div>
+  <div id="headerWrapper" style="background-image: url('/E-Commerce-Website/images/headerlogo/login.jpg');">
   </div>
 
 <!-- Full Page wrapper -->
