@@ -1,5 +1,6 @@
 <?php
     require_once '../core/init.php';
+    require_once '../helpers/helpers.php';
     include 'includes/head.php';
     $email = ((isset($_POST['email']))?$_POST['email']:'');
     $email = trim($email);
@@ -51,7 +52,8 @@
 				}
 				else{
 					//log user in
-					echo "log user in";
+					$user_id = $user_run['id'];
+					login($user_id);
 
 				}
 			}

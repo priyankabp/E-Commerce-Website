@@ -8,5 +8,5 @@
 	include 'includes/navigation.php';
 ?>
 
-Administrator Home
+Archived Page Home
 <?php include 'includes/footer.php';?>
