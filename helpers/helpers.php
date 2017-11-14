@@ -2,8 +2,10 @@
 
 	function display_errors($errors){
 		$display = '<ul class="bg-danger">';
-		foreach ($errors as $error) {
-			$display .= '<li>'.$error.'</li>';
+		if (is_array($errors) || is_object($errors)) {
+			foreach ($errors as $error) {
+				$display .= '<li>'.$error.'</li>';
+			}
 		}
 		$display .= '</ul>';
 		return $display;

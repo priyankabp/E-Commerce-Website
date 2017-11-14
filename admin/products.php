@@ -90,7 +90,9 @@
           //get products parameters
           $title = $_POST['title'];
           $brand = $_POST['brand'];
-          $categories = $_POST['child'];
+          if (isset($_POST['child'])) {
+            $categories = $_POST['child'];
+          }
           $price = $_POST['price'];
           $list_price = $_POST['list_price'];
           $weights = $_POST['weights'];
