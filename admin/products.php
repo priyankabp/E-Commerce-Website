@@ -299,7 +299,7 @@
               }
           ?>
         <table class="table table-bordered table-condensed table-stripped">
-          <thead>
+          <thead class="bg-primary">
             <th>Product</th>
             <th>Price</th>
             <th>Category</th>

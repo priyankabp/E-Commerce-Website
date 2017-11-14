@@ -142,13 +142,15 @@
 <hr>
 <table class="table table-bordered table-striped table-condensed">
 	<thead>
-		<th>Name</th>
-		<th>Email</th>
-		<th>Join Date</th>
-		<th>Last Login</th>
-		<th>Roles</th>
-		<th>Edit</th>
-		<th>Delete</th>
+		<tr class="bg-primary">
+			<th>Name</th>
+			<th>Email</th>
+			<th>Join Date</th>
+			<th>Last Login</th>
+			<th>Roles</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
 	</thead>
 	<tbody>
 		<?php while($user = mysqli_fetch_assoc($users_query)):

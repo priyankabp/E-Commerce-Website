@@ -36,11 +36,13 @@
           ?>
 		<table class="table table-bordered table-condensed table-stripped">
 	        <thead>
-	            <th>Product</th>
-	            <th>Price</th>
-	            <th>Category</th>
-	            <th>Sold</th>
-	            <th>Restore</th>
+	        	<tr class="bg-primary">
+		            <th>Product</th>
+		            <th>Price</th>
+		            <th>Category</th>
+		            <th>Sold</th>
+		            <th>Restore</th>
+	            </tr>
 	        </thead>
 	        <tbody>
 	            <?php while($get_product_row = mysqli_fetch_array($get_products_run)){

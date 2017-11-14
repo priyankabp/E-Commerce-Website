@@ -138,7 +138,7 @@
 
                       <table class="table table-bordered table-striped table-hover table-auto">
                         <thead>
-                          <tr>
+                          <tr class="bg-primary">
                             <th>#</th>
                             <th>Brand</th>
                             <th>Edit</th>
