@@ -44,7 +44,7 @@
                 <div class="form-group">
                   <div class="col-xs-3">
                     <label for="quantity">Quantity:</label>
-                    <input type="text" class="form-control" name="quantity" id="quantity">
+                    <input type="number" min="0" class="form-control" name="quantity" id="quantity">
                   </div><div class="col-xs-9"></div>
                 </div><br><br>
                 <div class="form-group"><br><br>

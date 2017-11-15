@@ -59,4 +59,18 @@
 	function preety_date($date){
 		return preety_date("M d, Y h:i A",strtotime($date));
 	}
+
+	function get_category($child_id){
+		global $db;
+		$id = $child_id;
+		$sql = "SELECT p.id AS `pid`, p.category AS `parent`, c.id AS `cid`,c.category AS `child`
+				FROM `e_commerce`.categories AS c
+				INNER JOIN `e_commerce`.categories AS p
+				ON c.parent = p.id
+				WHERE c.id = '$id'";
+
+		$query = $db->query($sql);
+		$category = mysqli_fetch_assoc($query);
+		return $category;
+	}
 ?>

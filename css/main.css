@@ -17,6 +17,19 @@ body{
 	background-attachment: fixed;
 }
 
+#partial-headerWrapper{
+	position: relative;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	height: 183px;
+	background-image: url(../images/headerlogo/background.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% 700px;
+	background-position: top center;
+	background-attachment: fixed;
+}
+
 #logotext{
 	padding-top: 250px;
 	position: center;
@@ -45,9 +58,8 @@ body{
 #background {
 	position: absolute;
 	width: 100%;
-	height: 350px;
-	background-image: url(../images/headerlogo/background.png);
-	background-position: left bottom;
+	height: 100px;
+	background-image: url(../images/headerlogo/login.jpg);
 	background-repeat: no-repeat;
 	background-size: auto 350px;
 	top: 400px;
@@ -64,7 +76,7 @@ body{
 }
 
 img.details{
-	width: 33%; 
+	width: 90%; 
 	margin: 15px auto;
 }
 

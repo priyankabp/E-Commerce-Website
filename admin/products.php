@@ -97,7 +97,6 @@
           $list_price = $_POST['list_price'];
           $weights = $_POST['weights'];
           $description = $_POST['description'];
-            $dbpath = '';
 
             $errors = array();
             $required = array('title','brand','price','parent','child','weights');
