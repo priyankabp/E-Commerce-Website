@@ -102,3 +102,7 @@ img.details{
 	margin: 7% auto;
 	padding: 15px;
 }
+
+.total-table-header th{
+	text-align: center;
+}
