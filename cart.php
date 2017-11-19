@@ -113,6 +113,11 @@
 			      	<div class="row">
 				        <form action="thankyou.php" method="post" id="payment-form">
 				        	<span class="bg-warning" id="payment-errors"></span>
+				        	<input type="hidden" name="tax" value="<?=$tax;?>">
+				        	<input type="hidden" name="sub_total" value="<?=$sub_total;?>">
+				        	<input type="hidden" name="grand_total" value="<?=$grand_total;?>">
+				        	<input type="hidden" name="cart_id" value="<?=$cart_id;?>">
+				        	<input type="hidden" name="description" value="<?=$item_count.' item'.(($item_count>1)?'s':'').' from E-Farmarket !';?>">
 				        	<div id="step1" style="display: block;">
 				        		<div class="form-group col-md-6">
 				        			<label for="full_name">Full Name:</label>
@@ -154,13 +159,19 @@
 				        			<input class="form-control" id="country" type="text" name="country">
 				        		</div>
 				        	</div>
-				        	<div id="step2" style="display: none;"></div>
-				        </form>
+				        	<div id="step2" style="display: none;">
+				        		<h4><p class="modal-body"> You can still go back and make changes, Just in case ! </p></h4>
+				        	</div>
+
+			
 			        </div>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary" onclick="check_address();">Next >></button>
+			        <button type="button" class="btn btn-primary" id="next_button" onclick="check_address();">Next >></button>
+			        <button type="button" class="btn btn-primary" id="back_button" onclick="back_address();" style="display: none;"><< Back</button>
+			        <button type="submit" class="btn btn-primary" id="checkout_button" style="display: none;">Check Out >></button>
+			        </form>
 			      </div>
 			    </div>
 			  </div>
@@ -170,6 +181,16 @@
 </div>
 
 <script type="text/javascript">
+
+	function back_address(){
+		$('#payment-errors').html("");
+		$('#step1').css("display","block");
+		$('#step2').css("display","none");
+		$('#next_button').css("display","inline-block");
+		$('#back_button').css("display","none");
+		$('#checkout_button').css("display","none");
+		$('#checkoutModalLabel').html("Shipping Address");
+	}
 	function check_address(){
 		var data = {
 			'full_name' : $('#full_name').val(),
@@ -191,6 +212,12 @@
 				}
 				if (data == 'passed') {
 					$('#payment-errors').html("");
+					$('#step1').css("display","none");
+					$('#step2').css("display","block");
+					$('#next_button').css("display","none");
+					$('#back_button').css("display","inline-block");
+					$('#checkout_button').css("display","inline-block");
+					$('#checkoutModalLabel').html("Final Checkout");
 				}
 			},
 			error : function(){alert("Something went wrong");},
