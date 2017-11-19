@@ -29,6 +29,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row">
+            <span id="modal_errors" class="bg-danger"></span>
             <div class="col-sm-6">
               <div class="center-block">
                 <img src="<?= $product['image']; ?>" alt="<?= $product['title']; ?>" class="details img-responsive">
@@ -40,7 +41,9 @@
               <hr>
               <p>Price : $<?= $product['price']; ?></p>
               <p>Brand : <?= $brand['brand']; ?></p>
-              <form action="add_cart.php" method="post">
+              <form action="add_cart.php" method="post" id="add_product_form">
+                <input type="hidden" name="product_id" value="<?php echo $id;?>">
+                <input type="hidden" name="available" id="available" value="">
                 <div class="form-group">
                   <div class="col-xs-3">
                     <label for="quantity">Quantity:</label>
@@ -54,8 +57,8 @@
                     <?php foreach($weight_array as $string) {
                       $string_array = explode(':', $string);
                       $weight_lb = $string_array[0];
-                      $quantity = $string_array[1];
-                      echo '<option value="'.$weight_lb.'">'.$weight_lb.' ('.$quantity.' Available)</option>';
+                      $available = $string_array[1];
+                      echo '<option value="'.$weight_lb.'" data-available="'.$available.'">'.$weight_lb.' ('.$available.' Available)</option>';
                     } ?>
                   </select>
                 </div>
@@ -66,12 +69,18 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-default" onclick="closeModal()">Close</button>
-        <button class="btn btn-warning" type="submit"><span class="glyphicon glyphicon-shopping-cart"></span>Add To Cart</button>
+        <button class="btn btn-warning" onclick="add_to_cart();return false;"><span class="glyphicon glyphicon-shopping-cart"></span>Add To Cart</button>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
+
+  $('#size').change(function(){
+    var available = $('#size option:selected').data("available");
+    $('#available').val(available);
+  });
+
   function closeModal(){
     $('#details-modal').modal('hide');
     setTimeout(function(){

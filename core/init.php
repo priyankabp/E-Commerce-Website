@@ -9,6 +9,12 @@
 	require_once $_SERVER['DOCUMENT_ROOT'].'/E-Commerce-Website/config.php';
 	require_once BASEURL.'helpers/helpers.php';
 
+	$cart_id = '';
+
+	if (isset($_COOKIE[CART_COOKIE])) {
+		$cart_id = sanitize($_COOKIE[CART_COOKIE]);
+	}
+
 	if (isset($_SESSION['User'])) {
 		$user_id = $_SESSION['User'];
 		$query = $db->query("SELECT * FROM users WHERE id = '$user_id'");
