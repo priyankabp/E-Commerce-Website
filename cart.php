@@ -52,7 +52,15 @@
 							<td><?php echo $i;?></td>
 							<td><?php echo $product['title'];?></td>
 							<td><?php echo money($product['price']);?></td>
-							<td><?php echo $item['quantity'];?></td>
+							<td>
+								 <button class="btn btn-xs btn-primary" onclick="update_cart('removeone','<?=$product['id'];?>','<?=$item['weight'];?>');">-</button>
+								 <?php echo $item['quantity'];?>	
+								 <?php if($item['quantity']< $available): ?>
+								     <button class="btn btn-xs btn-primary" onclick="update_cart('addone','<?=$product['id'];?>','<?=$item['weight'];?>');">+</button>
+							     <?php else:?>
+							     	 <span class="text-danger">Max</span>
+							     <?php endif;?>
+							</td>
 							<td><?php echo $item['weight'];?></td>
 							<td><?php echo money($item['quantity'] * $product['price']);?></td>
 					     </tr>

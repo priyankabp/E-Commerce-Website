@@ -75,6 +75,20 @@
         })
       }
   }
+
+  function update_cart(mode,edit_id,edit_weight){
+      var data = {'mode':mode,'edit_id':edit_id,'edit_weight':edit_weight};
+      $.ajax({
+          url: '/E-Commerce-Website/admin/includes/update_cart.php',
+          method : 'post',
+          data : data,
+          success : function(){
+            location.reload();
+          },
+          error : function(){alert("Something went wrong");}
+      });
+  }
+
 </script>
 </body>
 </html>
