@@ -26,7 +26,7 @@
 		$new_items = array();
 		// check if new added item is equal to any previous item
 		foreach ($previous_items as $previous_item) {
-			if ($item[0]['id'] == $previous_item['id'] && $item['size'] == $previous_item['size']) {
+			if ($item[0]['id'] == $previous_item['id'] && $item[0]['weight'] == $previous_item['weight']) {
 				$previous_item['quantity'] = $previous_item['quantity']+$item[0]['quantity'];
 				if ($previous_item['quantity']> $available) {
 					$previous_item['quantity'] = $available;
@@ -46,14 +46,12 @@
 		$db->query("UPDATE cart SET items = '{$items_json}',expire_date = '{$cart_expire}' WHERE id = '{$cart_id}'");
 		setcookie(CART_COOKIE,'',1,'/',$domain,false);
 		setcookie(CART_COOKIE,$cart_id,CART_COOKIE_EXPIRE,'/',$domain,false);
-
-
 	}
 	else{
 		//add product to cart, database and set cookie
 		$items_json = json_encode($item);
 		$cart_expire = date("Y-m-d H:i:s", strtotime("+30 days"));
-		$db->query("INSERT INTO cart (items,expire_date) VALUES ('{$items_json}','{cart_expire}') ");
+		$db->query("INSERT INTO cart (items,expire_date) VALUES ('{$items_json}','{$cart_expire}') ");
 		$cart_id = $db->insert_id;
 		setcookie(CART_COOKIE,$cart_id,CART_COOKIE_EXPIRE,'/',$domain,false);
 	}

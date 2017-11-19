@@ -40,10 +40,10 @@
 							$product_id = $item['id'];
 							$product_query = $db->query("SELECT * FROM products WHERE id = '{$product_id}'");
 							$product = mysqli_fetch_assoc($product_query);
-							$weightArray = explode(',', $product['weight']);
+							$weightArray = explode(',', $product['weights']);
 							foreach ($weightArray as $weightString) {
 								$w = explode(':', $weightString);
-								if ($w[0] == $item['size']) {
+								if ($w[0] == $item['weight']) {
 									$available = $w[1];
 								}
 							}

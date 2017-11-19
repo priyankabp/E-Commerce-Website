@@ -53,7 +53,7 @@
       var error = '';
       var data = $('#add_product_form').serialize();
 
-      if (size=='' || quantity == '' || quantity == 0) {
+      if (weight=='' || quantity == '' || quantity == 0) {
          error += '<p class="text-warning text-center"> Please select weight and quantity.</p>';
          $('#modal_errors').html(error);
          return;
