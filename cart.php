@@ -103,18 +103,75 @@
 
 			<!-- Modal -->
 			<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel">
-			  <div class="modal-dialog" role="document">
+			  <div class="modal-dialog modal-lg" role="document">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			        <h4 class="modal-title" id="checkoutModalLabel">Shipping Address</h4>
 			      </div>
 			      <div class="modal-body">
-			        ...
+			      	<div class="row">
+				        <form action="thankyou.php" method="post" id="payment-form">
+				        	<span class="bg-warning" id="payment-errors"></span>
+				        	<input type="hidden" name="tax" value="<?=$tax;?>">
+				        	<input type="hidden" name="sub_total" value="<?=$subtotal;?>">
+				        	<input type="hidden" name="grand_total" value="<?=$grand_total;?>">
+				        	<input type="hidden" name="cart_id" value="<?=$cart_id;?>">
+				        	<input type="hidden" name="description" value="<?=$item_count.' item'.(($item_count>1)?'s':'').' from E-Farmarket !';?>">
+				        	<div id="step1" style="display: block;">
+				        		<div class="form-group col-md-6">
+				        			<label for="full_name">Full Name:</label>
+				        			<input class="form-control" id="full_name" type="text" name="full_name">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="email">Email:</label>
+				        			<input class="form-control" id="email" type="email" name="email">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="street">Street Address:</label>
+				        			<input class="form-control" id="street" type="text" name="street">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="street2">Street Address 2:</label>
+				        			<input class="form-control" id="street2" type="text" name="street2">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="city">City:</label>
+				        			<input class="form-control" id="city" type="text" name="city">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="state">State:</label>
+				        			<input class="form-control" id="state" type="text" name="state">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="zip_code">Zip Code:</label>
+				        			<input class="form-control" id="zip_code" type="text" name="zip_code">
+				        		</div>
+
+				        		<div class="form-group col-md-6">
+				        			<label for="country">Country:</label>
+				        			<input class="form-control" id="country" type="text" name="country">
+				        		</div>
+				        	</div>
+				        	<div id="step2" style="display: none;">
+				        		<h4><p class="modal-body"> You can still go back and make changes, Just in case ! </p></h4>
+				        	</div>
+
+			
+			        </div>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Save changes</button>
+			        <button type="button" class="btn btn-primary" id="next_button" onclick="check_address();">Next >></button>
+			        <button type="button" class="btn btn-primary" id="back_button" onclick="back_address();" style="display: none;"><< Back</button>
+			        <button type="submit" class="btn btn-primary" id="checkout_button" style="display: none;">Check Out >></button>
+			        </form>
 			      </div>
 			    </div>
 			  </div>
@@ -122,4 +179,53 @@
 		<?php endif;  ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+	function back_address(){
+		$('#payment-errors').html("");
+		$('#step1').css("display","block");
+		$('#step2').css("display","none");
+		$('#next_button').css("display","inline-block");
+		$('#back_button').css("display","none");
+		$('#checkout_button').css("display","none");
+		$('#checkoutModalLabel').html("Shipping Address");
+	}
+	function check_address(){
+		var data = {
+			'full_name' : $('#full_name').val(),
+			'email'     : $('#email').val(),
+			'street'    : $('#street').val(),
+			'street2'   : $('#street2').val(),
+			'city'      : $('#city').val(),
+			'state'     : $('#state').val(),
+			'zip_code'  : $('#zip_code').val(),
+			'country'   : $('#country').val(),
+		};
+		$.ajax({
+			url : '/E-Commerce-Website/admin/includes/check_address.php',
+			method : 'POST',
+			data : data,
+			success : function(data){
+				if (data != 'passed') {
+					$('#payment-errors').html(data);
+				}
+				if (data == 'passed') {
+					$('#payment-errors').html("");
+					$('#step1').css("display","none");
+					$('#step2').css("display","block");
+					$('#next_button').css("display","none");
+					$('#back_button').css("display","inline-block");
+					$('#checkout_button').css("display","inline-block");
+					$('#checkoutModalLabel').html("Final Checkout");
+				}
+			},
+			error : function(){alert("Something went wrong");},
+		});
+	}
+
+
+
+
+</script>
 <?php include 'includes/footer.php'; ?>
