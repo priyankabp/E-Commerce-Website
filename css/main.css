@@ -110,3 +110,7 @@ img.details{
 #cart_widget td, #recent_widget td{
 	font-size: 14px;
 }
+
+input.price_range{
+	width: 55px;
+}

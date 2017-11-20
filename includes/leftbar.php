@@ -1,2 +1,6 @@
 <!-- left side bar -->
-  <div class="col-md-2">Left Sidebar here</div>
+  <div class="col-md-2">
+  	<?php
+  		include 'widgets/filters.php';
+  	?>
+  </div>
