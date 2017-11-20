@@ -107,6 +107,6 @@ img.details{
 	text-align: center;
 }
 
-#cart_widget td{
+#cart_widget td, #recent_widget td{
 	font-size: 14px;
 }
