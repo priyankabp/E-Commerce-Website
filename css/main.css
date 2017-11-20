@@ -106,3 +106,7 @@ img.details{
 .total-table-header th{
 	text-align: center;
 }
+
+#cart_widget td{
+	font-size: 14px;
+}
