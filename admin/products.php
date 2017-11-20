@@ -58,8 +58,8 @@
           $parentResult = mysqli_fetch_assoc($parentQuery);
           $parent = ((isset($_POST['parent']) && $_POST['parent'] != '')?$_POST['parent']:$parentResult['parent']);
           $price = ((isset($_POST['price']) && $_POST['price'] != '')?$_POST['price']:$edit_product['price']);
-          $list_price = ((isset($_POST['list_price']) && $_POST['list_price'] != '')?$_POST['list_price']:$edit_product['list_price']);
-          $description = ((isset($_POST['description']) && $_POST['description'] != '')?$_POST['description']:$edit_product['description']);
+          $list_price = ((isset($_POST['list_price']))?$_POST['list_price']:$edit_product['list_price']);
+          $description = ((isset($_POST['description']))?$_POST['description']:$edit_product['description']);
           $weights = ((isset($_POST['weights']) && $_POST['weights'] != '')?$_POST['weights']:$edit_product['weights']);
           $weights = rtrim($weights,',');
           $saved_image = ((isset($_POST['image']) && $_POST['image'] != '')?$_POST['image']:$edit_product['image']);
@@ -94,9 +94,9 @@
             $categories = $_POST['child'];
           }
           $price = $_POST['price'];
-          $list_price = $_POST['list_price'];
+          //$list_price = $_POST['list_price'];
           $weights = $_POST['weights'];
-          $description = $_POST['description'];
+          //$description = $_POST['description'];
 
             $errors = array();
             $required = array('title','brand','price','parent','child','weights');
@@ -106,7 +106,7 @@
                   break;
                 }
             }
-            if (!empty($_FILES)) {
+            if ($_FILES["photo"]["name"] != '') {
                 var_dump($_FILES);
                 $photo = $_FILES['photo'];
                 $name = $photo['name'];
@@ -143,14 +143,14 @@
                 $insert_product_query = "INSERT INTO `products` (`title`,`price`,`list_price`,`brand`,`categories`,`image`,`description`,`weights`) VALUES ('$title','$price','$list_price','$brand','$categories','$dbpath','$description','$weights')";
 
                 if (isset($_GET['edit'])) {
-                    $insert_product_query = "UPDATE products SET title = '$title', price = '$price', list_price = '$list_price', brand = '$brand', categories = '$categories', image = '$dbpath', description = '$description', weights = '$weights' WHERE id = '$edit_id'";
+                    $insert_product_query = "UPDATE `products` SET `title` = '$title', `price` = '$price', `list_price` = '$list_price', `brand` = '$brand', `categories` = '$categories', `image` = '$dbpath', `description` = '$description', `weights` = '$weights' WHERE `id` = '$edit_id'";
                 }
                 if (mysqli_query($db,$insert_product_query)) {
                       $msg = "New Product Added";
                       move_uploaded_file($tmpLoc, $uploadPath);
                 }
                 else{
-                      echo "Error: " . $insert_product_query . "<br>" . $connection->error;
+                      echo "Error: " . $insert_product_query . "<br>" . $db->error;
                       $error = "New Product Not Added";
                 }
                 header('location: products.php');
@@ -230,7 +230,7 @@
       </div>
       <div class="form-group pull-right">
           <a href="products.php" class="btn btn-primary">Cancel</a>&nbsp&nbsp
-          <input type="submit" value="<?php echo ((isset($_GET['add']))?"Add":"Edit");?> Product" class="btn btn-primary" name="">
+          <input type="submit" value="<?php echo ((isset($_GET['add']))?"Add":"Update");?> Product" class="btn btn-primary" name="">
       </div><div class="clearfix"></div>
   </form>
 

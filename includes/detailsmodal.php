@@ -58,7 +58,9 @@
                       $string_array = explode(':', $string);
                       $weight_lb = $string_array[0];
                       $available = $string_array[1];
-                      echo '<option value="'.$weight_lb.'" data-available="'.$available.'">'.$weight_lb.' ('.$available.' Available)</option>';
+                      if ($available >0) {
+                          echo '<option value="'.$weight_lb.'" data-available="'.$available.'">'.$weight_lb.' ('.$available.' Available)</option>';
+                      }
                     } ?>
                   </select>
                 </div>
