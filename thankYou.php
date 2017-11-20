@@ -16,6 +16,33 @@
 	$cart_id = $_POST['cart_id'];
 	$description = $_POST['description'];
 
+
+	// Adjust inventory
+	$item_query = "SELECT * FROM `cart` WHERE `id` = '$cart_id'";
+	$item_query_run = mysqli_query($db,$item_query);
+	$item_results = mysqli_fetch_assoc($item_query_run);
+	$items = json_decode($item_results['items'],true);
+	foreach ($items as $item) {
+		$newWeights = array();
+		$item_id = $item['id'];
+		$product_query = "SELECT `weights` FROM `products` WHERE `id` = '$item_id'";
+		$product_query_run = mysqli_query($db,$product_query);
+		$product = mysqli_fetch_assoc($product_query_run);
+		$weights = weightsToArray($product['weights']);
+		foreach ($weights as $weight) {
+			if ($weight['weight'] == $item['weight']) {
+				$q = $weight['quantity'] - $item['quantity'];
+				$newWeights[] = array('weight' => $weight['weight'],'quantity' => $q);
+			}
+			else{
+				$newWeights[] = array('weight' => $weight['weight'],'quantity' => $weight['quantity']);
+			}
+		}
+		$weightString = weightsToString($newWeights);
+		$db->query("UPDATE products SET weights = '$weightString' WHERE id = '$item_id'");
+	}
+
+	// Update cart
 	$db->query("UPDATE cart SET paid = 1 WHERE id = '$cart_id'");
 	$transaction_query = "INSERT INTO `transactions` (`cart_id`,`full_name`,`email`,`street`,`street2`,`city`,`state`,`zip_code`,`country`,`sub_total`,`tax`,`grand_total`,`description`) VALUES ('$cart_id','$full_name','$email','$street','$street2','$city','$state','$zip_code','$country','$subtotal','$tax','$grand_total','$description')";
 

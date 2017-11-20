@@ -73,4 +73,23 @@
 		$category = mysqli_fetch_assoc($query);
 		return $category;
 	}
+
+	function weightsToArray($string){
+		$weightsArray = explode(',', $string);
+		$returnArray = array();
+		foreach ($weightsArray as $weight) {
+			$w = explode(':', $weight);
+			$returnArray[] = array('weight' => $w[0],'quantity' => $w[1]);
+		}
+		return $returnArray;
+	}
+
+	function weightsToString($weights){
+		$weightString = '';
+		foreach ($weights as $weight) {
+			$weightString .= $weight['weight'].':'.$weight['quantity'].',';
+		}
+		$trimmed = rtrim($weightString,',');
+		return $trimmed;
+	}
 ?>
