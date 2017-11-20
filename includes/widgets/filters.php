@@ -1,4 +1,5 @@
 <?php
+	$category_id = ((isset($_REQUEST['category']))?$_REQUEST['category']:'');
 	$price_sort = ((isset($_REQUEST['price_sort']))?$_REQUEST['price_sort']:'');
 	$min_price = ((isset($_REQUEST['min_price']))?$_REQUEST['min_price']:'');
 	$max_price = ((isset($_REQUEST['max_price']))?$_REQUEST['max_price']:'');
@@ -8,6 +9,8 @@
 <h3>Search By :</h3>
 <h4>By Price</h4>
 <form action="search.php" method="post">
+	<input type="hidden" name="category" value="<?=$category_id?>">
+	<input type="hidden" name="price_sort" value="0">
 	<input type="radio" name="price_sort" value="low" <?=(($price_sort == 'low')?' checked':'')?>>Low to High<br>
 	<input type="radio" name="price_sort" value="high" <?=(($price_sort == 'high')?' checked':'')?>>High to Low<br><br>
 	<input type="text" name="min_price" class="price_range" placeholder="$ min" value="<?=$min_price;?>">To
