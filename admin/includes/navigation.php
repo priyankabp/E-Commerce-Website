@@ -15,12 +15,14 @@
       <div class="container collapse navbar-collapse" id="bs-example-navbar-collapse-2">
         <ul class="nav navbar-nav navbar-right">
             <!-- Menu Items -->
-            <li><a href="brands.php">Brands</a></li>
-            <li><a href="categories.php">Categories</a></li>
-            <li><a href="products.php">Products</a></li>
-            <li><a href="archived.php">Archived</a></li>
+            <?php if(has_role('vendor')): ?>
+              <li><a href="brands.php">Brands</a></li>
+              <li><a href="categories.php">Categories</a></li>
+              <li><a href="products.php">Products</a></li>
+              <li><a href="archived.php">Archived</a></li>
+            <?php endif; ?>
             <?php if(has_role('admin')): ?>
-                <li><a href="users.php">Users</a></li>
+              <li><a href="users.php">Users</a></li>
             <?php endif; ?>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hello <?php echo $user_data['firstname'];?>!

@@ -43,4 +43,69 @@
 		</tbody>
 	</table>
 </div>
+<div class="row">
+	<!-- Sales by Month -->
+	<?php
+
+		date_default_timezone_set('UTC');
+		$thisYear = date("Y");
+		$lastYear = $thisYear - 1;
+		$thisYearQuery = $db->query("SELECT grand_total, txn_date FROM transactions WHERE YEAR(txn_date) = '{$thisYear}'");
+		$lastYearQuery = $db->query("SELECT grand_total, txn_date FROM transactions WHERE YEAR(txn_date) = '{$lastYear}'");
+		$current = array();
+		$last = array();
+		$current_total = 0;
+		$last_total = 0;
+		while ($x = mysqli_fetch_assoc($thisYearQuery)) {
+			$month = date("m",strtotime($x['txn_date']));
+			if (!array_key_exists($month, $current)) {
+				$current[(int)$month] = $x['grand_total'];
+			}
+			else{
+				$current[(int)$month] += $x['grand_total'];
+			}
+			$current_total += $x['grand_total'];
+		}
+
+		while ($y = mysqli_fetch_assoc($lastYearQuery)) {
+			$month = date("m",strtotime($y['txn_date']));
+			if (!array_key_exists($month, $last)) {
+				$last[(int)$month] = $y['grand_total'];
+			}
+			else{
+				$last[(int)$month] += $y['grand_total'];
+			}
+			$last_total += $y['grand_total'];
+		}
+	?>
+	<div class="col-md-4">
+		<h3 class="text-center"> Sales By Month</h3> 
+		<table class="table table-condensed table-bordered table-stripped">
+			<thead class="bg-primary">
+				<th></th>
+				<th><?php echo $lastYear?></th>
+				<th><?php echo $thisYear?></th>
+			</thead>
+			<tbody>
+				<?php for($i=1;$i<=12;$i++):
+					$dt = date('F',mktime(0,0,0,$i, 1, date('Y')));
+				?>
+					<tr <?php echo (date('m') == $i)?' class="info"':'';?>>
+						<td><?php echo $dt;?></td>
+						<td><?php echo (array_key_exists($i, $last))?money($last[$i]):money(0);?></td>
+						<td><?php echo (array_key_exists($i, $current))?money($current[$i]):money(0);?></td>
+					</tr>
+				<?php endfor; ?>
+					<tr class="bg-primary">
+						<td>Total</td>
+						<td><?php echo money($last_total);?></td>
+						<td><?php echo money($current_total);?></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Inventory -->
+	<div class="col-md-8"></div>
+</div>
 <?php include 'includes/footer.php';?>
