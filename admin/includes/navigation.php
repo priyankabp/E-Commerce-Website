@@ -16,6 +16,7 @@
         <ul class="nav navbar-nav navbar-right">
             <!-- Menu Items -->
             <?php if(has_role('vendor')): ?>
+              <li><a href="index.php">My Dashboard</a></li>
               <li><a href="brands.php">Brands</a></li>
               <li><a href="categories.php">Categories</a></li>
               <li><a href="products.php">Products</a></li>

@@ -14,7 +14,7 @@
           var weightString = '';
           for(var i=1;i<=12;i++){
               if ($('#weight'+i).val() != '') {
-                  weightString += $('#weight'+ i).val()+':'+$('#quantity'+i).val()+',';
+                  weightString += $('#weight'+ i).val()+':'+$('#quantity'+i).val()+':'+$('#threshold'+i).val()+',';
               }
           }
           $('#weights').val(weightString);

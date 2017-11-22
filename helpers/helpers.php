@@ -79,7 +79,10 @@
 		$returnArray = array();
 		foreach ($weightsArray as $weight) {
 			$w = explode(':', $weight);
-			$returnArray[] = array('weight' => $w[0],'quantity' => $w[1]);
+			if (!empty($w[1]) || !empty($w[2])){
+				$returnArray[] = array('weight' => $w[0],'quantity' => $w[1],'threshold' => $w[2]);
+			}
+			
 		}
 		return $returnArray;
 	}
@@ -87,7 +90,7 @@
 	function weightsToString($weights){
 		$weightString = '';
 		foreach ($weights as $weight) {
-			$weightString .= $weight['weight'].':'.$weight['quantity'].',';
+			$weightString .= $weight['weight'].':'.$weight['quantity'].':'.$weight['threshold'].',';
 		}
 		$trimmed = rtrim($weightString,',');
 		return $trimmed;

@@ -74,11 +74,12 @@
           $weightsArray = explode(',',$trimWeightString);
           $wArray = array();
           $qArray = array();
+          $tArray = array();
           foreach ($weightsArray as $ws) {
               $w = explode(':', $ws);
-              $q = explode(':', $ws);
               $wArray[] = $w[0];
-              $qArray[] = $q[1]; 
+              $qArray[] = $w[1]; 
+              $tArray[] = $w[2];
           }
       }
       else{
@@ -245,13 +246,17 @@
       <div class="modal-body">
           <div class="container-fluid">
               <?php for ($i=1; $i <=12 ; $i++): ?>
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-2">
                       <label for="weight<?=$i;?>">Weight:</label>
                       <input type="text" name="weight<?=$i;?>" id="weight<?=$i;?>" value="<?=((!empty($wArray[$i-1]))? $wArray[$i-1]:'');?>" class="form-control">
                   </div>
                   <div class="form-group col-md-2">
                       <label for="quantity<?=$i;?>">Quantity:</label>
                       <input type="number" name="quantity<?=$i;?>" id="quantity<?=$i;?>" value="<?=((!empty($qArray[$i-1]))? $qArray[$i-1]:'');?>" min="0" class="form-control">
+                  </div>
+                   <div class="form-group col-md-2">
+                      <label for="threshold<?=$i;?>">Threshold:</label>
+                      <input type="number" name="threshold<?=$i;?>" id="threshold<?=$i;?>" value="<?=((!empty($tArray[$i-1]))? $tArray[$i-1]:'');?>" min="0" class="form-control">
                   </div>
               <?php endfor; ?>
           </div>

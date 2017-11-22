@@ -79,7 +79,7 @@
 		}
 	?>
 	<div class="col-md-4">
-		<h3 class="text-center"> Sales By Month</h3> 
+		<h3 class="text-center">Sales By Month</h3> 
 		<table class="table table-condensed table-bordered table-stripped">
 			<thead class="bg-primary">
 				<th></th>
@@ -106,6 +106,49 @@
 	</div>
 
 	<!-- Inventory -->
-	<div class="col-md-8"></div>
+	<?php
+		$inventoryQuery = $db->query("SELECT * FROM products WHERE deleted = 0");
+		$lowItems = array();
+		while($product = mysqli_fetch_assoc($inventoryQuery)){
+			$item = array();
+			$weights = weightsToArray($product['weights']);
+			foreach ($weights as $weight) {
+				if($weight['quantity'] != $weight['threshold']){
+					$category = get_category($product['categories']);
+					$item = array(
+						'title' => $product['title'],
+						'weight' => $weight['weight'],
+						'quantity' => $weight['quantity'],
+						'threshold' => $weight['threshold'],
+						'category' => $category['parent'].' / '.$category['child']
+					);
+					$lowItems[] = $item;
+			    }
+			}
+		}
+	?>
+	<div class="col-md-8">
+		<h3 class="text-center">Low Inventory</h3>
+		<table class="table-condensed table-stripped table-bordered table">
+			<thead class="bg-primary">
+				<th>Product</th>
+				<th>Category</th>
+				<th>Weight</th>
+				<th>Quantity</th>
+				<th>Threshold</th>
+			</thead>
+			<tbody>
+				<?php foreach($lowItems as $item):?>
+					<tr <?php echo ($item['quantity'] == 0 )? ' class="danger"':'';?>>
+						<td><?php echo $item['title'];?></td>
+						<td><?php echo $item['category'];?></td>
+						<td><?php echo $item['weight'];?></td>
+						<td><?php echo $item['quantity'];?></td>
+						<td><?php echo $item['threshold'];?></td>
+					</tr>
+			    <?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 </div>
 <?php include 'includes/footer.php';?>
