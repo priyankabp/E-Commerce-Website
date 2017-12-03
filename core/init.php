@@ -23,6 +23,15 @@
 		$user_data['firstname'] = $full_name[0];
 		$user_data['lastname'] = $full_name[1];
 	}
+	else {
+	    $login_page = "/E-Commerce-Website/login.php";
+	    $register_page = "/E-Commerce-Website/registration.php";
+	    if  ((($_SERVER['REQUEST_URI']) != $login_page) && (($_SERVER['REQUEST_URI']) != $register_page)  ) {
+	        header("Location: $login_page");
+	        exit();
+	    }
+    }
+
 	if (isset($_SESSION['success_flash'])) {
 		echo '<div class="alert alert-success" role="alert">'.$_SESSION['success_flash'].'</div>';
 		unset($_SESSION['success_flash']);

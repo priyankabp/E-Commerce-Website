@@ -19,13 +19,18 @@
 		return '$'.number_format($price,2);
 	}
 
-	function login($user_id){
+	function login($user_id,$user_role){
 		$_SESSION['User'] = $user_id;
 		global $db;
 		$date = date("Y-m-d H:i:s");
 		$db->query("UPDATE users SET last_login = '$date' WHERE id = '$user_id'");
 		$_SESSION['success_flash'] = 'You are logged in!';
-		header('location: index.php');
+		if (in_array( $user_role, ["admin", "vendor","mediator"])){
+            header('location: ../admin/index.php');
+        }
+        else {
+            header('location: index.php');
+        }
 	}
 
 	function is_logged_in(){

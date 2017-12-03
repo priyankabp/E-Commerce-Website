@@ -18,7 +18,7 @@ if (isset($_GET['delete'])) {
   $get_delete_parent_run = mysqli_query($db,$get_delete_parent);
   $get_delete_parent_category = mysqli_fetch_assoc($get_delete_parent_run);
   if ($get_delete_parent_category['parent']==0) {
-    $delete_query = "DELETE FROM categories WHERE parent = 'delete_id'";
+    $delete_query = "DELETE FROM categories WHERE parent = '$delete_id'";
     if(mysqli_query($db,$delete_query)){
         $del_msg = "Category has been deleted";
       }
@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
     $error = "Please add category name";
   }
   else{
-    $check_query = "SELECT * FROM categories WHERE category = '$category_name' AND parent = '$parent'";
+    $check_query = "SELECT * FROM categories WHERE `category` = '$category_name' AND `parent` = '$parent_name'";
     $check_run = mysqli_query($db,$check_query);
     if (mysqli_num_rows($check_run) > 0) {
       $error = "Category name already exits";
@@ -67,13 +67,13 @@ if (isset($_POST['update'])) {
     $update_error = "Please add category name";
   }
   else{
-    $check_query = "SELECT * FROM categories WHERE category = '$category_name' and parent = '$parent'";
+    $check_query = "SELECT * FROM categories WHERE `category` = '$category_name' and `parent` = '$parent_name'";
     $check_run = mysqli_query($db,$check_query);
     if (mysqli_num_rows($check_run) > 0) {
       $update_error = "Category name already exits";
     }
     else{
-      $update_query = "UPDATE `categories` SET `category`='$category_name',`parent`=`$parent_name` WHERE `id`='$edit_id'";
+      $update_query = "UPDATE `categories` SET `category`='$category_name',`parent`='$parent_name' WHERE `id`='$edit_id'";
       if (mysqli_query($db,$update_query)) {
         $update_msg = "Category name updated";
       }
@@ -128,7 +128,7 @@ if (isset($_POST['update'])) {
 
                 <?php 
                   if (isset($_GET['edit'])) {
-                    $edit_check_query = "SELECT * FROM categories WHERE id = $edit_id";
+                    $edit_check_query = "SELECT * FROM categories WHERE id = '$edit_id'";
                     $edit_check_run = mysqli_query($db,$edit_check_query);
                     if (mysqli_num_rows($edit_check_run) > 0 ) {
                       
@@ -171,7 +171,7 @@ if (isset($_POST['update'])) {
                             echo "<span class='pull-right' style='color:green;'>$update_msg</span>";
                           }
                           elseif (isset($update_error)) {
-                            echo "<span class='pull-right' style='color:red;'>$update_rror</span>";
+                            echo "<span class='pull-right' style='color:red;'>$update_error</span>";
                           }
                         ?>
                         <input type="text" value="<?php echo $update_category;?>" placeholder="Category Name" class="form-control" name="category_name">
