@@ -32,6 +32,7 @@ include 'includes/head.php';
                 <input type="submit" name="" value="Register" class="text-center btn btn-primary"/>
                 <input type="hidden" name="page" value="registration"/>
             </div>
+            <p class="text-right"><a href="login.php" alt="login">Already Registered? Log In </a></p>
         </form>
 
     </div>

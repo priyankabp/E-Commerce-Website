@@ -90,6 +90,5 @@
 			<input type="submit" name="" value="Login" class="text-center btn btn-primary">
 		</div>
 	</form>
-	<p class="text-right"><a href="registration.php" alt="registration">Register</a></p>
-	<p class="text-right"><a href="/E-Commerce-Website/index.php" alt="home">Visit Site</a></p>
+	<p class="text-right"><a href="registration.php" alt="registration">Not Regsitered? Register</a></p>
 </div>
